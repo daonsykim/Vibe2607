@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>TodoGlow - 오늘의 할일 관리</title>
+  <meta name="description" content="TodoGlow는 파스텔 톤의 디자인 기반의 아름답고 직관적인 프리미엄 오늘의 할일 관리 웹 서비스입니다.">
+  <meta name="keywords" content="할일, 투두리스트, todo, 생산성, 일정 관리, 오늘할일">
+  <meta name="author" content="TodoGlow">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS v3 Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            outfit: ['Outfit', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Stylesheet (Overrides & Complex Animations) -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen w-full flex items-center justify-center p-4 md:p-6 bg-gradient-to-tr from-indigo-50 via-purple-50 to-pink-50 relative overflow-x-hidden font-sans">
+  
+  <!-- Background Glow FX -->
+  <div class="absolute top-[-10%] left-[-10%] w-96 h-96 rounded-full bg-pink-200/50 blur-[100px] pointer-events-none animate-[pulse_10s_infinite_alternate_ease-in-out]"></div>
+  <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-sky-200/50 blur-[120px] pointer-events-none animate-[pulse_12s_infinite_alternate_ease-in-out_2s]"></div>
+  <div class="absolute top-[30%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-violet-200/40 blur-[90px] pointer-events-none animate-[pulse_14s_infinite_alternate_ease-in-out_4s]"></div>
+
+  <!-- App Wrapper -->
+  <div class="w-full max-w-[1100px] z-10 relative">
+    <div class="bg-white/70 backdrop-blur-xl border border-white/60 rounded-[32px] shadow-[0_20px_50px_rgba(100,116,139,0.08)] p-6 md:p-10 min-h-[700px] flex flex-col gap-6 md:gap-8">
+      
+      <!-- App Header -->
+      <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-100 pb-5 gap-4">
+        <div class="flex items-center gap-3">
+          <svg class="w-8 h-8 text-indigo-500 drop-shadow-[0_4px_6px_rgba(99,102,241,0.2)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+          <h1 class="font-outfit text-3xl font-extrabold tracking-tight text-slate-800">
+            Todo<span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 relative">Glow</span>
+          </h1>
+        </div>
+        <div class="flex items-center gap-2 bg-white/60 border border-white/80 px-4 py-2 rounded-2xl shadow-sm text-sm font-medium text-slate-500 font-outfit">
+          <svg class="text-indigo-500" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <span id="current-date-text">2026년 6월 2일 화요일</span>
+        </div>
+      </header>
+
+      <!-- Main Layout -->
+      <main class="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6 md:gap-8 items-start">
+        
+        <!-- Left Panel: Analytics & Dashboard -->
+        <section class="flex flex-col gap-6" aria-label="대시보드 통계">
+          <!-- Achievements Card -->
+          <div class="bg-white/60 border border-white/85 rounded-3xl p-6 shadow-[0_4px_20px_rgba(148,163,184,0.03)] flex flex-col items-center">
+            <h2 class="font-outfit text-base font-semibold mb-6 text-slate-800 self-start">오늘의 성취도</h2>
+            
+            <div class="flex flex-col items-center gap-5 w-full mb-6">
+              <div class="relative w-[140px] height-[140px] flex items-center justify-center">
+                <svg class="progress-ring -rotate-90" width="140" height="140">
+                  <circle class="stroke-slate-100" stroke-width="9" fill="transparent" r="58" cx="70" cy="70"/>
+                  <circle class="progress-ring__circle" stroke="url(#progress-gradient)" stroke-width="9" fill="transparent" r="58" cx="70" cy="70" stroke-linecap="round"/>
+                  <defs>
+                    <linearGradient id="progress-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#6366f1" /> <!-- Indigo -->
+                      <stop offset="50%" stop-color="#a855f7" /> <!-- Purple -->
+                      <stop offset="100%" stop-color="#ec4899" /> <!-- Pink -->
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div class="absolute font-outfit text-3xl font-extrabold text-slate-800" id="progress-percentage-label">0%</div>
+              </div>
+              
+              <div class="text-center px-2">
+                <p class="text-slate-700 font-bold text-sm mb-1" id="remaining-count-message">남은 할 일이 없습니다.</p>
+                <p class="text-slate-400 text-xs leading-relaxed" id="motivational-quote">행복한 하루를 시작해볼까요?</p>
+              </div>
+            </div>
+
+            <!-- Stats Mini Cards -->
+            <div class="grid grid-cols-2 gap-3 w-full">
+              <div class="bg-white/80 border border-slate-100/50 rounded-2xl p-3 text-center flex flex-col gap-0.5 shadow-sm transition-all hover:bg-white hover:shadow">
+                <span class="text-[11px] font-medium text-slate-400">진행중</span>
+                <span class="font-outfit text-xl font-extrabold text-indigo-500" id="stat-active-count">0</span>
+              </div>
+              <div class="bg-white/80 border border-slate-100/50 rounded-2xl p-3 text-center flex flex-col gap-0.5 shadow-sm transition-all hover:bg-white hover:shadow">
+                <span class="text-[11px] font-medium text-slate-400">완료됨</span>
+                <span class="font-outfit text-xl font-extrabold text-purple-500" id="stat-completed-count">0</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category Quick Stats -->
+          <div class="bg-white/60 border border-white/85 rounded-3xl p-6 shadow-[0_4px_20px_rgba(148,163,184,0.03)]">
+            <h2 class="font-outfit text-base font-semibold mb-4 text-slate-800">카테고리 현황</h2>
+            <div class="flex flex-col gap-2.5" id="categories-stat-list">
+              <div class="flex justify-between items-center px-3 py-2.5 bg-white/40 border border-white/50 rounded-xl transition-all hover:bg-white hover:translate-x-1 shadow-sm">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-purple-400 shadow-[0_0_8px_#c084fc]"></span>
+                  <span class="text-xs font-medium text-slate-600">업무</span>
+                </div>
+                <span class="font-outfit text-xs font-bold text-slate-700 bg-slate-100/80 px-2 py-0.5 rounded-md" id="cat-stat-work">0</span>
+              </div>
+              <div class="flex justify-between items-center px-3 py-2.5 bg-white/40 border border-white/50 rounded-xl transition-all hover:bg-white hover:translate-x-1 shadow-sm">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-sky-400 shadow-[0_0_8px_#38bdf8]"></span>
+                  <span class="text-xs font-medium text-slate-600">개인</span>
+                </div>
+                <span class="font-outfit text-xs font-bold text-slate-700 bg-slate-100/80 px-2 py-0.5 rounded-md" id="cat-stat-personal">0</span>
+              </div>
+              <div class="flex justify-between items-center px-3 py-2.5 bg-white/40 border border-white/50 rounded-xl transition-all hover:bg-white hover:translate-x-1 shadow-sm">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
+                  <span class="text-xs font-medium text-slate-600">학습</span>
+                </div>
+                <span class="font-outfit text-xs font-bold text-slate-700 bg-slate-100/80 px-2 py-0.5 rounded-md" id="cat-stat-study">0</span>
+              </div>
+              <div class="flex justify-between items-center px-3 py-2.5 bg-white/40 border border-white/50 rounded-xl transition-all hover:bg-white hover:translate-x-1 shadow-sm">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-pink-400 shadow-[0_0_8px_#f472b6]"></span>
+                  <span class="text-xs font-medium text-slate-600">건강</span>
+                </div>
+                <span class="font-outfit text-xs font-bold text-slate-700 bg-slate-100/80 px-2 py-0.5 rounded-md" id="cat-stat-health">0</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right Panel: Tasks & Filters -->
+        <section class="flex flex-col gap-6" aria-label="할 일 목록">
+          
+          <!-- Toolbar -->
+          <div class="flex flex-col md:flex-row gap-4 items-stretch md:items-center">
+            <!-- Search bar -->
+            <div class="flex-1 relative flex items-center">
+              <svg class="absolute left-4 w-4 h-4 text-slate-400 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <input type="text" id="search-input" class="w-full bg-white/80 border border-slate-200/80 rounded-2xl py-3 pl-11 pr-11 outline-none text-slate-700 text-sm focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100/40 transition-all placeholder:text-slate-400" placeholder="할 일 검색..." aria-label="할 일 검색">
+              <button id="search-clear-btn" class="absolute right-4 text-slate-400 hover:text-slate-600 p-1 rounded-full transition-all hover:bg-slate-100 hidden" aria-label="검색어 초기화">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Select Filters -->
+            <div class="flex gap-3">
+              <select id="category-filter" class="bg-white/80 border border-slate-200/80 text-slate-600 px-4 py-3 pr-10 outline-none text-xs md:text-sm rounded-2xl cursor-pointer appearance-none bg-no-repeat bg-[right_14px_center] bg-[length:14px] focus:border-indigo-400 transition-all" style="background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='hsl(215, 20%, 55%)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E&quot;);" aria-label="카테고리 필터">
+                <option value="all">모든 카테고리</option>
+                <option value="work">💼 업무</option>
+                <option value="personal">🏠 개인</option>
+                <option value="study">📚 학습</option>
+                <option value="health">🏃 건강</option>
+                <option value="other">🏷️ 기타</option>
+              </select>
+
+              <select id="priority-filter" class="bg-white/80 border border-slate-200/80 text-slate-600 px-4 py-3 pr-10 outline-none text-xs md:text-sm rounded-2xl cursor-pointer appearance-none bg-no-repeat bg-[right_14px_center] bg-[length:14px] focus:border-indigo-400 transition-all" style="background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='hsl(215, 20%, 55%)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E&quot;);" aria-label="우선순위 필터">
+                <option value="all">모든 우선순위</option>
+                <option value="high">🚨 높음</option>
+                <option value="medium">⚡ 보통</option>
+                <option value="low">🌱 낮음</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Tabs Filter -->
+          <div class="border-b border-slate-100 pb-1">
+            <div class="flex gap-1 bg-slate-100/75 p-1 rounded-2xl w-fit border border-slate-200/30 relative" role="tablist">
+              <button id="filter-all" class="tab-btn px-5 py-2 text-xs md:text-sm font-semibold rounded-xl cursor-pointer text-slate-500 hover:text-slate-800 transition-all z-10 active" role="tab" aria-selected="true" aria-controls="todo-list">전체</button>
+              <button id="filter-active" class="tab-btn px-5 py-2 text-xs md:text-sm font-semibold rounded-xl cursor-pointer text-slate-500 hover:text-slate-800 transition-all z-10" role="tab" aria-selected="false" aria-controls="todo-list">진행 중</button>
+              <button id="filter-completed" class="tab-btn px-5 py-2 text-xs md:text-sm font-semibold rounded-xl cursor-pointer text-slate-500 hover:text-slate-800 transition-all z-10" role="tab" aria-selected="false" aria-controls="todo-list">완료됨</button>
+              <!-- Sliding Indicator Background -->
+              <div class="tab-indicator absolute top-1 left-1 h-[calc(100%-8px)] bg-white shadow-sm shadow-slate-200 border border-slate-200/20 rounded-xl z-0"></div>
+            </div>
+          </div>
+
+          <!-- Todo List Container -->
+          <div class="relative min-h-[300px]">
+            <ul id="todo-list" class="flex flex-col gap-3" role="list">
+              <!-- Dynamically populated via JS -->
+            </ul>
+            
+            <!-- Empty State -->
+            <div id="empty-state" class="flex flex-col items-center justify-center py-16 px-4 text-center hidden">
+              <div class="w-16 h-16 rounded-2xl bg-white border border-slate-100 text-slate-400 flex items-center justify-center mb-4 shadow-sm animate-[pulse_3s_infinite_ease-in-out]">
+                <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                  <polyline points="10 9 9 9 8 9"/>
+                </svg>
+              </div>
+              <h3 class="text-sm font-semibold text-slate-800 mb-1">조건에 맞는 할 일이 없습니다</h3>
+              <p class="text-xs text-slate-400 max-w-[280px] leading-relaxed">새로운 할 일을 추가하고 오늘을 가득 채워보세요!</p>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Floating Action Button (FAB) -->
+      <button id="add-task-btn" class="fixed md:absolute bottom-6 right-6 w-14 h-14 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg shadow-indigo-300 hover:shadow-xl hover:scale-105 hover:rotate-90 active:scale-95 transition-all duration-300 flex items-center justify-center z-40" aria-label="할 일 추가">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Task Form Modal -->
+  <div id="task-modal" class="fixed top-0 left-0 w-full h-full bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 p-4" aria-hidden="true">
+    <div class="bg-white border border-slate-100 rounded-3xl p-6 md:p-8 shadow-2xl max-w-[500px] w-full transform translate-y-8 scale-95 transition-all duration-300" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
+      <header class="flex justify-between items-center mb-6">
+        <h2 id="modal-heading" class="text-lg font-bold text-slate-800">새로운 할 일</h2>
+        <button id="modal-close-btn" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-xl hover:bg-slate-50 transition-all" aria-label="닫기">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </header>
+
+      <form id="task-form" class="flex flex-col gap-5">
+        <!-- Hidden input for task editing ID -->
+        <input type="hidden" id="edit-task-id">
+
+        <div class="flex flex-col gap-2">
+          <label for="task-title-input" class="text-xs font-semibold text-slate-500">할 일 제목</label>
+          <input type="text" id="task-title-input" class="bg-slate-50 border border-slate-200/80 rounded-2xl px-4 py-3 outline-none text-slate-700 text-sm focus:bg-white focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100/40 transition-all" placeholder="어떤 일을 하실 건가요?" required maxlength="80">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="flex flex-col gap-2">
+            <label for="task-category-select" class="text-xs font-semibold text-slate-500">카테고리</label>
+            <div class="relative">
+              <select id="task-category-select" class="w-full bg-slate-50 border border-slate-200/80 text-slate-600 px-4 py-3 pr-10 outline-none text-sm rounded-2xl cursor-pointer appearance-none bg-no-repeat bg-[right_14px_center] bg-[length:14px] focus:bg-white focus:border-indigo-400 transition-all" style="background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='hsl(215, 20%, 55%)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E&quot;);" required>
+                <option value="work">💼 업무</option>
+                <option value="personal" selected>🏠 개인</option>
+                <option value="study">📚 학습</option>
+                <option value="health">🏃 건강</option>
+                <option value="other">🏷️ 기타</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="task-priority-select" class="text-xs font-semibold text-slate-500">우선순위</label>
+            <div class="relative">
+              <select id="task-priority-select" class="w-full bg-slate-50 border border-slate-200/80 text-slate-600 px-4 py-3 pr-10 outline-none text-sm rounded-2xl cursor-pointer appearance-none bg-no-repeat bg-[right_14px_center] bg-[length:14px] focus:bg-white focus:border-indigo-400 transition-all" style="background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='hsl(215, 20%, 55%)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E&quot;);" required>
+                <option value="high">🚨 높음</option>
+                <option value="medium" selected>⚡ 보통</option>
+                <option value="low">🌱 낮음</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3 mt-4">
+          <button type="button" id="modal-cancel-btn" class="px-5 py-3 text-xs md:text-sm font-semibold rounded-2xl bg-slate-50 border border-slate-200 text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition-all">취소</button>
+          <button type="submit" id="modal-submit-btn" class="px-5 py-3 text-xs md:text-sm font-semibold rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg shadow-indigo-100 hover:from-indigo-600 hover:to-purple-600 transition-all active:scale-95">추가하기</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-6 left-6 flex flex-col gap-2.5 z-50 pointer-events-none" aria-live="polite"></div>
+
+  <!-- JavaScript Resource -->
+  <script src="app.js"></script>
+</body>
+</html>
