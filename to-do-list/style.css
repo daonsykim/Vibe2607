@@ -1,0 +1,151 @@
+/* TodoGlow Tailwind Overrides & Custom Animations */
+
+/* --- SVG Progress Ring Transitions --- */
+.progress-ring__circle {
+  transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  stroke-dasharray: 364.42; /* 2 * PI * r(58) */
+  stroke-dashoffset: 364.42;
+}
+
+/* --- Custom Checkbox Setup --- */
+.todo-checkbox-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+}
+
+.todo-checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.todo-checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 22px;
+  width: 22px;
+  background: #f8fafc;
+  border: 2.2px solid #cbd5e1;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.todo-checkmark svg {
+  width: 12px;
+  height: 12px;
+  color: white;
+  transform: scale(0) rotate(-45deg);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.todo-checkbox:checked ~ .todo-checkmark {
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  border-color: transparent;
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.25);
+}
+
+.todo-checkbox:checked ~ .todo-checkmark svg {
+  transform: scale(1) rotate(0deg);
+}
+
+.todo-checkbox:focus-visible ~ .todo-checkmark {
+  border-color: #6366f1;
+}
+
+/* --- Animated Tabs Indicator --- */
+.tab-indicator {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s ease;
+}
+
+/* --- Modal Display Toggle Rules --- */
+#task-modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#task-modal.active > div {
+  transform: translateY(0) scale(1);
+}
+
+/* --- Custom Toast System --- */
+.toast {
+  background: white;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 10px 25px -5px rgba(148, 163, 184, 0.1), 0 8px 10px -6px rgba(148, 163, 184, 0.1);
+  padding: 12px 18px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #334155;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transform: translateX(-40px);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: all;
+  border-left: 4px solid #6366f1;
+}
+
+.toast.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.toast.success { border-left-color: #10b981; }
+.toast.info { border-left-color: #3b82f6; }
+.toast.warning { border-left-color: #f59e0b; }
+.toast.danger { border-left-color: #ef4444; }
+
+.toast svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* --- Micro-Animations: Confetti Particles --- */
+.confetti-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 999;
+  animation: particle-fly 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes particle-fly {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(0) rotate(var(--rot));
+    opacity: 0;
+  }
+}
+
+/* --- Custom Custom Scrollbars --- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
+}
